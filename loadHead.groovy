@@ -21,9 +21,9 @@ CSG face =foil.get(1)
 		.rotx(90)
 		.movex(offset)	 
 		//.movey(offset)	
-		.scaley(20)
+		.scaley(25)
 		.movey(offset*1.2)
-def head = Extrude.revolve(slice,0,20)
+def head = Extrude.revolve(slice,0,50)
 head.add(face)
 
 double min =0
