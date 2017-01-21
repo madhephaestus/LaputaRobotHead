@@ -22,11 +22,18 @@ CSG face =foil.get(1)
 		.movex(offset)	 
 		//.movey(offset)	
 		.scaley(20)
-		.movey(offset*1.1)
+		.movey(offset*1.2)
 def head = Extrude.revolve(slice,0,20)
 head.add(face)
 
-CSG allParts = head.get(0).union(head)
-	.toZMin()
+double min =0
+for(CSG part:head){
+	if(part.getMinZ()<min){
+		min=part.getMinZ()
+	}
+}
 
-return allParts
+
+return head.collect{
+	it.movez(-min)
+}
