@@ -1,6 +1,7 @@
 
 import eu.mihosoft.vrl.v3d.svg.*;
 import eu.mihosoft.vrl.v3d.Extrude;
+import  eu.mihosoft.vrl.v3d.ext.quickhull3d.*
 
 File f = ScriptingEngine
 	.fileFromGit(
@@ -8,24 +9,26 @@ File f = ScriptingEngine
 		"master",//branch
 		"face.svg"// File from within the Git repo
 	)
+println "Extruding SVG "+f.getAbsolutePath()
 SVGLoad s = new SVGLoad(f.toURI())
 ArrayList<CSG>foil = s.extrude(10,0.01)
 
-CSG slice = foil.get(0)
-			.rotx(90)
-double offset = (slice.getMaxX()-slice.getMinX())/-2
-slice = slice.movex(offset)			
+CSG slice = foil.remove(0)
+			.rotx(-90)
+double centering = -slice.getCenterX()
+slice=slice.movex(centering)
+			
 		
+foil = s.extrude(-centering*3,0.01)
+foil.remove(0)
+CSG face =foil.remove(0)
+CSG holes = CSG.unionAll(foil)
 
-CSG face =foil.get(1)
-		.rotx(90)
-		.toXMin()
-		.movex(offset)	
-		.movez(-50)
-		.scaley(25)
-		.movey(offset*1.2)
-def head = Extrude.revolve(slice,0,50)
-head.add(face)
+face = face.difference(holes)
+		.movex(centering)
+		.rotx(-90)
+def head = HullUtil.hull(Extrude.revolve(slice,0,50))
+head.union(face)
 
 double min =0
 for(CSG part:head){
@@ -35,6 +38,4 @@ for(CSG part:head){
 }
 
 
-return head.collect{
-	it.movez(-min)
-}
+return [head.union(face)]
