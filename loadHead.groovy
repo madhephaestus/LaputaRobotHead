@@ -19,12 +19,12 @@ double centering = -slice.getCenterX()
 slice=slice.movex(centering)
 			
 		
-foil = s.extrude(-centering-10,0.01)
+foil = s.extrude(-centering*1.1,0.01)
 foil.remove(0)
 CSG face =foil.remove(0)
-//CSG holes = CSG.unionAll(foil)
+CSG holes = CSG.unionAll(foil)
 
-face = face//.difference(holes)
+face = face.difference(holes)
 		.movex(centering)
 		.rotx(-90)
 def head = HullUtil.hull(Extrude.revolve(slice,0,30))
