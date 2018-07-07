@@ -19,7 +19,7 @@ double centering = -slice.getCenterX()
 slice=slice.movex(centering)
 			
 		
-foil = s.extrude(-centering*4,0.01)
+foil = s.extrude(-centering-10,0.01)
 foil.remove(0)
 CSG face =foil.remove(0)
 //CSG holes = CSG.unionAll(foil)
