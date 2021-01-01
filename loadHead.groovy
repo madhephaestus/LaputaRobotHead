@@ -11,6 +11,14 @@ File f = ScriptingEngine
 	)
 println "Extruding SVG "+f.getAbsolutePath()
 SVGLoad s = new SVGLoad(f.toURI())
+
+def holeParts = s.extrudeLayerToCSG(10,"holes")
+// seperate holes and outsides using layers to differentiate
+def head = s.extrudeLayerToCSG(10,"head")
+					.difference(holeParts)
+// layers can be extruded at different depths					
+def eyeShield = s.extrudeLayerToCSG(5,"eyeShield")
+
 ArrayList<CSG>foil = s.extrude(1,0.01)
 
 CSG slice = foil.remove(0)
