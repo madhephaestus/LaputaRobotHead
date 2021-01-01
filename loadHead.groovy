@@ -25,20 +25,21 @@ double centering = -slice.getCenterX()
 slice=slice.movex(centering)
 def head = HullUtil.hull(Extrude.revolve(slice,0,30))
 		
-
+def distanceFaceSticksOut = 10;
 // layers can be extruded at different depths
-def eyeShield = s.extrudeLayerToCSG(-centering*1.1,"eyeShield")
-CSG face =eyeShield
-def holeParts = s.extrudeLayerToCSG(-centering*1.1,"holes")
+def face = s.extrudeLayerToCSG(-centering+distanceFaceSticksOut,"eyeShield")
+
+def holeParts = s.extrudeLayerToCSG(-centering+distanceFaceSticksOut,"holes")
 
 
-face = face.difference(holeParts)
-		.movex(centering)
-		.rotx(-90)
+def faceWithHoles = face
+					.difference(holeParts)
+					.movex(centering)
+					.rotx(-90)
 
- def headTotal =head.union(face)
+ def headTotal =head.union(faceWithHoles)
 .toZMin()
-
+headTotal.setName("LaputaGuardHead")
 
 
 return [headTotal]
