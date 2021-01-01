@@ -18,15 +18,14 @@ SVGLoad s = new SVGLoad(f.toURI())
 
 
 // seperate holes and outsides using layers to differentiate
-def headPart = s.extrudeLayerToCSG(10,"head")
+def headPart = s.extrudeLayerToCSG(0.1,"head")
 CSG slice = headPart
 			.rotx(-90)
 double centering = -slice.getCenterX()
 slice=slice.movex(centering)
 def head = HullUtil.hull(Extrude.revolve(slice,0,30))
 		
-//foil = s.extrude(-centering*1.1,0.01)
-//foil.remove(0)
+
 // layers can be extruded at different depths
 def eyeShield = s.extrudeLayerToCSG(-centering*1.1,"eyeShield")
 CSG face =eyeShield
