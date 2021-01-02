@@ -31,7 +31,6 @@ def face = s.extrudeLayerToCSG(-centering+distanceFaceSticksOut,"eyeShield")
 
 def holeParts = s.extrudeLayerToCSG(-centering+distanceFaceSticksOut,"holes")
 
-
 def faceWithHoles = face
 					.difference(holeParts)
 					.movex(centering)
@@ -40,6 +39,5 @@ def faceWithHoles = face
  def headTotal =head.union(faceWithHoles)
 .toZMin()
 headTotal.setName("LaputaGuardHead")
-
 
 return [headTotal]
